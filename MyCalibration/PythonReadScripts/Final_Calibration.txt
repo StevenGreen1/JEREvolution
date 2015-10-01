@@ -1,0 +1,16 @@
+CalibrECAL was found to be:                         1 2.0
+CalibrHCALBarrel was found to be:                   1
+CalibrHCALEndcap was found to be:                   1
+CalibrHCALOther was found to be:                    1
+ECalGeVToMIP was found to be:                       1
+HCalGeVToMIP was found to be:                       1
+MuonGeVToMIP was found to be:                       1
+MaxHCalHitHadronicEnergy was found to be:           1
+ECalToEMGeVCalibration was found to be:             1
+HCalToEMGeVCalibration was found to be:             1
+ECalToHadGeVCalibration was found to be:            1
+HCalToHadGeVCalibration was found to be:            1
+ECALBarrelTimeWindowMax is:                         1
+HCALBarrelTimeWindowMax is:                         1
+ECALEndcapTimeWindowMax is:                         1
+HCALEndcapTimeWindowMax is:                         1

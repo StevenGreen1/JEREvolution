@@ -1,0 +1,17 @@
+CalibrECAL was found to be:                         42.4242424242 84.8484848484
+CalibrHCALBarrel was found to be:                   50.035507589
+CalibrHCALEndcap was found to be:                   55.5078056495
+CalibrHCALOther was found to be:                    31.3242467750
+ECalGeVToMIP was found to be:                       153.846
+HCalGeVToMIP was found to be:                       39.2157
+MuonGeVToMIP was found to be:                       10.3093
+HCalMIPMPV (adc not calo hit) was found to be:      0.0001525
+MaxHCalHitHadronicEnergy was found to be:           0.0004925
+ECalToEMGeVCalibration was found to be:             1000000.0
+HCalToEMGeVCalibration was found to be:             0.997345733216
+ECalToHadGeVCalibration was found to be:            0.997345733216
+HCalToHadGeVCalibration was found to be:            1.12626416708
+ECALBarrelTimeWindowMax is:                         300.0
+HCALBarrelTimeWindowMax is:                         300.0
+ECALEndcapTimeWindowMax is:                         300.0
+HCALEndcapTimeWindowMax is:                         300.0
