@@ -25,11 +25,12 @@ numberHCalLayers="${7}"
 #===============================================
 # Default File Information
 #===============================================
+PandoraAnalysisPath="/usera/sg568/ilcsoft_v01_17_07/OptimisationStudies/PandoraAnalysis_OptimisationStudies/LCPandoraAnalysis/bin/"
 #PandoraAnalysisPath="/cvmfs/ilc.desy.de/sw/x86_64_gcc44_sl6/v01-17-07/PandoraAnalysis/v01-00-01/bin/"
-PandoraAnalysisPath="/usera/sg568/ilcsoft_v01_17_07/PandoraAnalysis/bin/"
+#PandoraAnalysisPath="/usera/sg568/ilcsoft_v01_17_07/PandoraAnalysis/bin/"
 
 hadronicScaleSettingPandora="CSM" #TEM or CSM
-sourceFile="/usera/sg568/ilcsoft_v01_17_07/init_ilcsoft_localPandoraAnalysis.sh"
+sourceFile="/var/clus/usera/sg568/ilcsoft_v01_17_07/OptimisationStudies/init_ilcsoft_OptimisationStduies.sh"
 useCondor="Yes"
 maxNumCondorJobs=300
 
@@ -90,7 +91,7 @@ HCalEndCapTimeWindowMax="${11}"
 # Pandora PFA
 #===============================================
 ECalToEm=0.9995
-HCalToEm=0.9995
+HCalToEm=1.075
 ECalToHad=1.076
 HCalToHad=1.075
 
@@ -150,7 +151,7 @@ fi
 #===============================================#
 #===============================================#
 
-# Set MIP scale for realistic HCal
+# Set MIP scale for realistic ECal and HCal
 cd ${XmlGeneration}
 python PrepareXml.py "Muon" ${muonEnergyCalibration} ${slcioPath} ${slcioFormat} ${gearFile} ${pandoraSettingsFile} ${CalibrECAL} ${CalibrHCALBarrel} ${CalibrHCALEndCap} ${CalibrHCALOther} ${ECalBarrelTimeWindowMax} ${HCalBarrelTimeWindowMax} ${ECalEndCapTimeWindowMax} ${HCalEndCapTimeWindowMax} ${ECalGeVToMIP} ${HCalGeVToMIP} ${MuonGeVToMIP} ${ECalMIPMPV} ${HCalMIPMPV} ${MHHHE} ${ECalToEm} ${HCalToEm} ${ECalToHad} ${HCalToHad}
 
@@ -426,18 +427,14 @@ else
     echo "Please select whether you wish to use condor."
 fi
 
-# ECalToEm and HCalToEM Calibration 
+# ECalToEm Calibration 
 
 ${PandoraAnalysisPath}PandoraPFACalibrate_EMScale -a "${photonPath}" -b "${photonEnergyCalibration}" -c "${pandoraPFAAccuracy}" -d "${outputPath}" -e "90" 
 
 cd ${PythonReadScripts}
 ECalToEm=$(python EM_Extract.py ${calibrationFile} ${photonEnergyCalibration} ${ECalToEm} "Calibration_Constant")
-HCalToEm=${ECalToEm}
-
 EM_Mean=$(python EM_Extract.py ${calibrationFile} ${photonEnergyCalibration} ${ECalToEm} "Mean")
-
 Fractional_EM_Error=$(echo "scale=10; sqrt( (${photonEnergyCalibration} -${EM_Mean})^2)/${photonEnergyCalibration}" | bc)
-
 CheckECalToEMPandoraPFA=$(echo "$Fractional_EM_Error >= ${pandoraPFAAccuracy}" | bc -l)
 
 while [ $CheckECalToEMPandoraPFA -gt 0 ]
@@ -462,7 +459,6 @@ do
 
     cd ${PythonReadScripts}
     ECalToEm=$(python EM_Extract.py ${calibrationFile} ${photonEnergyCalibration} ${ECalToEm} "Calibration_Constant")
-    HCalToEm=${ECalToEm}
 
     EM_Mean=$(python EM_Extract.py ${calibrationFile} ${photonEnergyCalibration} ${ECalToEm} "Mean")
     Fractional_EM_Error=$(echo "scale=10; sqrt( (${photonEnergyCalibration} -${EM_Mean})^2)/${photonEnergyCalibration}" | bc)
@@ -491,11 +487,11 @@ else
 fi
 
 # HCalToHad and ECalToHad Calibration 
-echo "${kaonLEnergyCalibration}"
-echo "${kaonLPath}"
-echo "${numberHCalLayers}"
-echo "${pandoraPFAAccuracy}"
-echo "${outputPath}" 
+#echo "${kaonLEnergyCalibration}"
+#echo "${kaonLPath}"
+#echo "${numberHCalLayers}"
+#echo "${pandoraPFAAccuracy}"
+#echo "${outputPath}" 
 
 if [ "$hadronicScaleSettingPandora" = "CSM" ];then
     ${PandoraAnalysisPath}PandoraPFACalibrate_HadronicScale_ChiSquareMethod -a "${kaonLPath}" -b "${kaonLEnergyCalibration}" -c "${pandoraPFAAccuracy}" -d "${outputPath}" -e "${numberHCalLayers}" 
@@ -509,22 +505,14 @@ fi
 cd ${PythonReadScripts}
 
 HCalToHad=$(python Had_Extract.py ${calibrationFile} ${kaonLEnergyCalibration} "HCTH" ${HCalToHad} "Calibration_Constant" ${hadronicScaleSettingPandora}) 
-echo $HCalToHad
-
+HCalToEm=${HCalToHad}
 ECalToHad=$(python Had_Extract.py ${calibrationFile} ${kaonLEnergyCalibration} "ECTH" ${ECalToHad} "Calibration_Constant" ${hadronicScaleSettingPandora}) 
-echo $ECalToHad
-
 HCalToHad_Fom=$(python Had_Extract.py ${calibrationFile} ${kaonLEnergyCalibration} "HCTH" ${HCalToHad} "FOM" ${hadronicScaleSettingPandora}) 
-echo $HCalToHad_Fom
-
 ECalToHad_Fom=$(python Had_Extract.py ${calibrationFile} ${kaonLEnergyCalibration} "ECTH" ${ECalToHad} "FOM" ${hadronicScaleSettingPandora}) 
-echo $ECalToHad_Fom
 
 # Target Limits on recostruction
 UpperLimit=$(echo "1 + ${pandoraPFAAccuracy}" | bc)
 LowerLimit=$(echo "1 - ${pandoraPFAAccuracy}" | bc)
-echo $UpperLimit
-echo $LowerLimit
 
 # Limits on reconstruction
 
@@ -579,6 +567,7 @@ do
 
     cd ${PythonReadScripts}
     HCalToHad=$(python Had_Extract.py ${calibrationFile} ${kaonLEnergyCalibration} "HCTH" ${HCalToHad} "Calibration_Constant" ${hadronicScaleSettingPandora}) 
+    HCalToEm=${HCalToHad}
     ECalToHad=$(python Had_Extract.py ${calibrationFile} ${kaonLEnergyCalibration} "ECTH" ${ECalToHad} "Calibration_Constant" ${hadronicScaleSettingPandora}) 
     HCalToHad_Fom=$(python Had_Extract.py ${calibrationFile} ${kaonLEnergyCalibration} "HCTH" ${HCalToHad} "FOM" ${hadronicScaleSettingPandora}) 
     ECalToHad_Fom=$(python Had_Extract.py ${calibrationFile} ${kaonLEnergyCalibration} "ECTH" ${ECalToHad} "FOM" ${hadronicScaleSettingPandora}) 
@@ -615,10 +604,10 @@ done
 #===============================================#
 
 cd ${PythonReadScripts}
-python Final_Calibration.py ${CalibrECAL} ${CalibrHCALBarrel} ${CalibrHCALEndCap} ${CalibrHCALOther} ${ECalBarrelTimeWindowMax} ${HCalBarrelTimeWindowMax} ${ECalEndCapTimeWindowMax} ${HCalEndCapTimeWindowMax} ${ECalGeVToMIP} ${HCalGeVToMIP} ${MuonGeVToMIP} ${ECalMIPMPV} ${HCalMIPMPV} ${MHHHE} ${ECalToEm} ${HCalToEm} ${ECalToHad} ${HCalToHad} ${outputPath}
+python Final_Calibration.py ${outputPath} ${CalibrECAL} ${CalibrHCALBarrel} ${CalibrHCALEndCap} ${CalibrHCALOther} ${ECalBarrelTimeWindowMax} ${HCalBarrelTimeWindowMax} ${ECalEndCapTimeWindowMax} ${HCalEndCapTimeWindowMax} ${ECalGeVToMIP} ${HCalGeVToMIP} ${MuonGeVToMIP} ${ECalMIPMPV} ${HCalMIPMPV} ${MHHHE} ${ECalToEm} ${HCalToEm} ${ECalToHad} ${HCalToHad}
 
 cd ${XmlGeneration}
-python PrepareFinalXml.py ${CalibrECAL} ${CalibrHCALBarrel} ${CalibrHCALEndCap} ${CalibrHCALOther} ${ECalBarrelTimeWindowMax} ${HCalBarrelTimeWindowMax} ${ECalEndCapTimeWindowMax} ${HCalEndCapTimeWindowMax} ${ECalGeVToMIP} ${HCalGeVToMIP} ${MuonGeVToMIP} ${ECalMIPMPV} ${HCalMIPMPV} ${MHHHE} ${ECalToEm} ${HCalToEm} ${ECalToHad} ${HCalToHad} ${outputPath}
+python PrepareFinalXml.py ${outputPath} ${CalibrECAL} ${CalibrHCALBarrel} ${CalibrHCALEndCap} ${CalibrHCALOther} ${ECalBarrelTimeWindowMax} ${HCalBarrelTimeWindowMax} ${ECalEndCapTimeWindowMax} ${HCalEndCapTimeWindowMax} ${ECalGeVToMIP} ${HCalGeVToMIP} ${MuonGeVToMIP} ${ECalMIPMPV} ${HCalMIPMPV} ${MHHHE} ${ECalToEm} ${HCalToEm} ${ECalToHad} ${HCalToHad}
 
 #===============================================#
 #                      End                      #

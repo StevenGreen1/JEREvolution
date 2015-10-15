@@ -16,35 +16,37 @@ def find_between( s, first, last ):
 #======================
 # Calibration Constants
 #======================
-CalibrECal_Input = sys.argv[1]
+CalibrECal_Input = sys.argv[2]
 CalibrECal_Input2 = 2 * float(CalibrECal_Input)
 CalibrECal = str(CalibrECal_Input) + ' ' + str(CalibrECal_Input2)
-CalibrHCalBarrel = sys.argv[2]
-CalibrHCalEndCap = sys.argv[3]
-CalibrHCalOther = sys.argv[4]
+CalibrHCalBarrel = sys.argv[3]
+CalibrHCalEndCap = sys.argv[4]
+CalibrHCalOther = sys.argv[5]
 CalibrMuon = '56.7'
-ECALBarrelTimeWindowMax = sys.argv[5]
-HCALBarrelTimeWindowMax = sys.argv[6]
-ECALEndcapTimeWindowMax = sys.argv[7]
-HCALEndcapTimeWindowMax = sys.argv[8]
+ECALBarrelTimeWindowMax = sys.argv[6]
+HCALBarrelTimeWindowMax = sys.argv[7]
+ECALEndcapTimeWindowMax = sys.argv[8]
+HCALEndcapTimeWindowMax = sys.argv[9]
 
-ECalGeVToMIP = sys.argv[9]
-HCalGeVToMIP = sys.argv[10]
-MuonGeVToMIP = sys.argv[11]
-HCalMIPMPV = sys.argv[12]
+ECalGeVToMIP = sys.argv[10]
+HCalGeVToMIP = sys.argv[11]
+MuonGeVToMIP = sys.argv[12]
 
-MHHHE = sys.argv[13]
+ECalMIPMPV = sys.argv[13]
+HCalMIPMPV = sys.argv[14]
 
-ECalToEm = sys.argv[14]
-HCalToEm = sys.argv[15]
-ECalToHad = sys.argv[16]
-HCalToHad = sys.argv[17]
+MHHHE = sys.argv[15]
+
+ECalToEm = sys.argv[16]
+HCalToEm = sys.argv[17]
+ECalToHad = sys.argv[18]
+HCalToHad = sys.argv[19]
 
 #======================
 # Output Path
 #======================
 
-outputPath = sys.argv[18]
+outputPath = sys.argv[1]
 
 #======================
 
@@ -70,6 +72,9 @@ jobList += str(HCalGeVToMIP) + '\n'
 
 jobList += 'MuonGeVToMIP was found to be:                       '
 jobList += str(MuonGeVToMIP) + '\n'
+
+jobList += 'ECalMIPMPV (adc not calo hit) was found to be:      '
+jobList += str(ECalMIPMPV) + '\n'
 
 jobList += 'HCalMIPMPV (adc not calo hit) was found to be:      '
 jobList += str(HCalMIPMPV) + '\n'

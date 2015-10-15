@@ -18,7 +18,7 @@ def find_between( s, first, last ):
 # Input Variables
 #===========================
 
-print sys.argv
+#print sys.argv
 
 particle = sys.argv[1]
 energy = sys.argv[2]

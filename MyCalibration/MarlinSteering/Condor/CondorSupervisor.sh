@@ -36,7 +36,7 @@ else
 
     while  [ $nRun -gt 0 ]
     do
-        njobs=`condor_q -w | grep "${JOBNAME}" | wc -l | sed 's/ //g'`		
+        njobs=`condor_q -w | grep "${JOBNAME}.sh" | wc -l | sed 's/ //g'`		
 		
         if [ $njobs -lt $maxRuns ]; then
             rm -f temp_Calibration.job
@@ -89,7 +89,7 @@ echo "$myrunlist is empty. Exiting..."
 
 echo "Checking the jobs are finished..."
 
-njobs2=`condor_q | grep "${JOBNAME}" | wc -l | sed 's/ //g'`
+njobs2=`condor_q -w | grep "${JOBNAME}.sh" | wc -l | sed 's/ //g'`
 
 sleep_time=10
 
@@ -97,7 +97,7 @@ while [ $njobs2 -gt 0 ];
 do
     echo "Not finished yet, come back later."
     sleep ${sleep_time}s
-    njobs2=`condor_q | grep "${JOBNAME}" | wc -l | sed 's/ //g'`
+    njobs2=`condor_q -w | grep "${JOBNAME}.sh" | wc -l | sed 's/ //g'`
 done
     
 echo "Finished"

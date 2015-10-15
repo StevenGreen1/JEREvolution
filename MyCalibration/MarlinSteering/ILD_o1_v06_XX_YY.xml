@@ -1001,14 +1001,14 @@
   <parameter name="LHCalCollections" type="StringVec" lcioInType="CalorimeterHit">LHCAL </parameter>^M
     <!--Name of the LCAL collection used to form clusters-->^M
   <parameter name="LCalCollections" type="StringVec" lcioInType="CalorimeterHit">LCAL </parameter>^M
-    <!--ECal Collection ADC Names-->^M
-  <parameter name="ECalCollectionsADC" type="StringVec">EcalBarrelSiliconCollection EcalEndcapSiliconCollection  EcalEndcapRingCollection </parameter>^M
-    <!--HCal Barrel Collection ADC Names-->^M
-  <parameter name="HCalBarrelCollectionsADC" type="StringVec"> HcalBarrelRegCollection </parameter>^M
-    <!--HCal Endcap Collection ADC Names-->^M
-  <parameter name="HCalEndCapCollectionsADC" type="StringVec"> HcalEndCapsCollection </parameter>^M
-    <!--HCal Other/Ring Collection ADC Names-->^M
-  <parameter name="HCalOtherCollectionsADC" type="StringVec"> HcalEndCapRingsCollection</parameter>^M
+    <!--ECal Collection SimCaloHit Names-->^M
+  <parameter name="ECalCollectionsSimCaloHit" type="StringVec">EcalBarrelSiliconCollection EcalEndcapSiliconCollection  EcalEndcapRingCollection </parameter>^M
+    <!--HCal Barrel Collection SimCaloHit Names-->^M
+  <parameter name="HCalBarrelCollectionsSimCaloHit" type="StringVec"> HcalBarrelRegCollection </parameter>^M
+    <!--HCal Endcap Collection SimCaloHit Names-->^M
+  <parameter name="HCalEndCapCollectionsSimCaloHit" type="StringVec"> HcalEndCapsCollection </parameter>^M
+    <!--HCal Other/Ring Collection SimCaloHit Names-->^M
+  <parameter name="HCalOtherCollectionsSimCaloHit" type="StringVec"> HcalEndCapRingsCollection</parameter>^M
     <!--Set the debug print level-->
   <parameter name="Printing" type="int"> 0 </parameter>
     <!--Output root file name-->^M
